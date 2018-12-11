@@ -188,17 +188,17 @@ $ cf start
 
 ## 私的φ(..)
 
-ゆくゆくは、Cloud Foundry の [Route Service](https://docs.cloudfoundry.org/services/route-services.html) にしたいと思う。
+ゆくゆくは、Cloud Foundry の [Route Service](https://docs.cloudfoundry.org/services/route-services.html) にしたいと思う。 ・・・　した node-rt-serv ブランチ
 
 そのメモ。
 
-cookie(express-session) のオプションでスコープ Domain にしないとうまく行かないと思う。
+cookie(express-session) のオプションでスコープ Domain にしないとうまく行かないと思う。　・・・ Dmain 追加した。複数にpath指定のほうがセキュアかもしれない
 
-認証後、要求元へのリダイレクトの直前に req に Cookie 渡す必要(があるかどうか？)
+認証後、要求元へのリダイレクトの直前に req に Cookie 渡す必要(があるかどうか？) ・・・ 無い。session ライブラリが全部やってくれる
 
-認証済みだったら、`req.pipe(request(url)).pipe(res);` か、`x-cf-forwarded-url` で要求元を表示してやる。
+認証済みだったら、`req.pipe(request(url)).pipe(res);` か、`x-cf-forwarded-url` で要求元を表示してやる。 ・・・ npm install request でいれてやらないと。。。
 
-Route Service で X-CF-Proxy-Signature とか、X-CF-Proxy-Metadata とか、良く理解していないので、調べる。
+Route Service で X-CF-Proxy-Signature とか、X-CF-Proxy-Metadata とか、良く理解していないので、調べる。 ・・・ log で出すようにした。
 
 ----
 
@@ -210,7 +210,7 @@ $ cf push --no-start
 
 ※ アプリ情報は manifest.yml に記載
 
-環境変数の設定 ・・・ 特有の設定ため無視で良い
+環境変数の設定 
 
 ```bash
 $ cf set-env node-rt-serv CALLBACK_URL https://node-rt-serv.<Your Domain>/login/callback
@@ -220,10 +220,9 @@ $ cf set-env node-rt-serv LOGOUT_URL ＜アプリの登録 で[エンドポイ�
 $ cf set-env node-rt-serv CLIENT_SECRET '＜アプリの登録で作成した クライアントシークレット＞'
 $ cf set-env node-rt-serv TARGET_REDIRECT https://<バインドするアプリのホスト＋Domain>
 $ cf set-env node-rt-serv CLIENT_LOGIN_URL https://node-rt-serv.<Your Domain>/login
+$ cf set-env node-rt-serv COOKIE_DOMAIN <Your Domain>
 
 ```
-
-※　あと、COOKIE_DOMAIN というのも追加しないと・・・
 
 起動
 
@@ -257,4 +256,11 @@ $ cf delete-service <service-instance>
 
 必要に応じて、アプリとして push した本体も削除する。
 
+---
+
+次は、
+
+* Redis くっつけてスケールできるか？
+* 他(Azure AD 以外)との連携
+* ユーザリポジトリサーバ兼汎用バックエンドの作成　・・・いらないか。。。
 

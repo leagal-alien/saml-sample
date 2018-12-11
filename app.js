@@ -51,7 +51,8 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge: 30 * 60 * 1000
+    maxAge: 30 * 60 * 1000,
+    domain: process.env.COOKIE_DOMAIN
   }
 }));
 
@@ -79,7 +80,8 @@ app.get('/login', passport.authenticate('saml', {
   failureRedirect: '/',
   failureFlash: true
 }), function(req, res) {
-  res.redirect('/');
+  //res.redirect('/');
+  res.redirect(process.env.TARGET_REDIRECT);
 });
 
 // IdPでのSSOログイン後、コールバックされるURL
@@ -87,7 +89,8 @@ app.post('/login/callback', passport.authenticate('saml', {
   failureRedirect: '/',
   failureFlash: true
 }), function(req, res) {
-  res.redirect('/');
+  //res.redirect('/');
+  res.redirect(process.env.TARGET_REDIRECT);
 });
 
 // ログアウト処理
@@ -102,7 +105,7 @@ app.get('/logout', function(req, res) {
     if (!err) {
       res.redirect(request);
     }
-  });
+  })
 });
 
 // IdPでのSSOログアウト後、コールバックされるURL

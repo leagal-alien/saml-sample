@@ -1,6 +1,6 @@
 ---
 applications:
-- name: saml-sample
+- name: node-rt-serv
   memory: 128MB
   instances: 1
   path: .  
